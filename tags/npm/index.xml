@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Npm on WAITSUNGTSAO.COM</title>
+    <link>/tags/npm/</link>
+    <description>Recent content in Npm on WAITSUNGTSAO.COM</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 15 Nov 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/npm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>npm被墙之后</title>
+      <link>/2017/11/15/npm/</link>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/15/npm/</guid>
+      <description>&lt;p&gt;因为众所周知的原因，npm的官方源无法访问，这里列出了使用墙内镜像的替代解决方案。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learning Theory on WAITSUNGTSAO.COM</title>
+    <link>/tags/learning-theory/</link>
+    <description>Recent content in Learning Theory on WAITSUNGTSAO.COM</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 20 Nov 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/learning-theory/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>机器学习理论(1) 学习理论框架</title>
+      <link>/2017/11/20/machine_learning_theory_1/</link>
+      <pubDate>Mon, 20 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/20/machine_learning_theory_1/</guid>
+      <description>&lt;p&gt;学习的基础是可学习性。可学习性包括三个方面：是否是可计算的；计算的复杂度如何；算法如何实现。在机器学习领域有一整套严格的形式化语言来描述这些问题。作为机器学习理论系列的第一篇，这里主要梳理了学习的概念、学习的分类、学习方法的大致框架等内容。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

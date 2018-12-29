@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on WAITSUNGTSAO.COM</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on WAITSUNGTSAO.COM</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 20 Nov 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>机器学习理论(1) 学习理论框架</title>
+      <link>/2017/11/20/machine_learning_theory_1/</link>
+      <pubDate>Mon, 20 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/20/machine_learning_theory_1/</guid>
+      <description>&lt;p&gt;学习的基础是可学习性。可学习性包括三个方面：是否是可计算的；计算的复杂度如何；算法如何实现。在机器学习领域有一整套严格的形式化语言来描述这些问题。作为机器学习理论系列的第一篇，这里主要梳理了学习的概念、学习的分类、学习方法的大致框架等内容。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tmux的使用与配置</title>
+      <link>/2017/11/15/tmux/</link>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/15/tmux/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://tmux.github.io/&#34;&gt;tmux&lt;/a&gt;是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，自然就会懂得tmux的多窗口与窗口恢复有多重要了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>npm被墙之后</title>
+      <link>/2017/11/15/npm/</link>
+      <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/15/npm/</guid>
+      <description>&lt;p&gt;因为众所周知的原因，npm的官方源无法访问，这里列出了使用墙内镜像的替代解决方案。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

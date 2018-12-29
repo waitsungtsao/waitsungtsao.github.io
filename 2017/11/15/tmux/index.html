@@ -1,0 +1,768 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Tmux的使用与配置 | WAITSUNGTSAO.COM
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="/2017/11/15/tmux/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="WAITSUNGTSAO.COM" />
+  <link href="/index.xml" rel="feed" type="application/rss+xml" title="WAITSUNGTSAO.COM" />
+
+  
+  
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="/">WAITSUNGTSAO.COM</a></h1>
+        <h2>The only journey is the one within.</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          
+          
+          
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Tmux的使用与配置</h1>
+      <div class="meta">
+        Nov 15, 2017 &nbsp;
+        
+          #<a href="/tags/tmux">tmux</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <p><a href="https://tmux.github.io/">tmux</a>是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，自然就会懂得tmux的多窗口与窗口恢复有多重要了。</p>
+
+<h1 id="tmux基础">tmux基础</h1>
+
+<h2 id="tmux的基本概念">tmux的基本概念</h2>
+
+<p>在tmux中，工作的环境可以分为三重结构：</p>
+
+<ul>
+<li>Session: 是基本任务的映射，同一任务下的所有的工作环境均可纳入Session之下</li>
+<li>Windows: 是对于任务的次级划分，同时仅可见一个Windows</li>
+<li>Pane: 是对于Windows的进一步划分，是Tmux中最小的单元，同一Windows下的Panes可在同一Windows下同时呈现（也可单独放大某一Pane）</li>
+</ul>
+
+<p>其具体结构如图所示：（图片引用自<a href="http://cenalulu.github.io/">CENALULU&rsquo;S TECH BLOG</a>)</p>
+
+<p><img src="http://o70fjq8qm.bkt.clouddn.com/TmuxFrame.jpg" alt="Tmux结构" /></p>
+
+<p>如图所示，在tmux窗口下方的任务栏中显示了当前的Session与Windows编号。Session与Windows均可根据需要进行命名以方便管理。</p>
+
+<h2 id="安装">安装</h2>
+
+<p>在Mac下推荐使用homebrew进行安装</p>
+
+<pre><code class="language-shell">$ brew install tmux
+</code></pre>
+
+<p>在Linux环境中可以使用相应的包管理系统进行安装，如在Debian系环境下</p>
+
+<pre><code class="language-shell">$ sudo apt-get install tmux
+</code></pre>
+
+<p>Red Hat系环境下</p>
+
+<pre><code class="language-shell">$ sudo yum install tmux
+</code></pre>
+
+<p>arch linux环境下</p>
+
+<pre><code class="language-shell">$ pacman -S tmux
+</code></pre>
+
+<p>FreeBSD通过自带的port进行安装</p>
+
+<pre><code class="language-shell">$ cd /usr/ports/sysutil/tmux
+$ make install clean
+</code></pre>
+
+<p>Windows下可以使用<a href="http://cygwin.com/">cywin</a>安装，确保Select Pakages界面出现时，选中tmux即可</p>
+
+<p>通过git安装的话，依次执行</p>
+
+<pre><code class="language-shell">$ git clone https://github.com/tmux/tmux.git
+$ cd tmux
+$ sh autogen.sh
+$ ./configure &amp;&amp; make
+</code></pre>
+
+<p>如果从打包好的源码安装的话</p>
+
+<pre><code class="language-shell">$ ./configure &amp;&amp; make
+$ sudo make install
+</code></pre>
+
+<p>需要注意的是，tmux依赖于<code>libevent 2.x</code>，下载地址在<a href="http://libevent.org">这里</a>。如果缺少<code>libevent 2.x</code>环境而使用源码安装tmux的话，安装过程可能不会那么顺利。有时也会出现如下报错，执行如下命令即可。</p>
+
+<pre><code class="language-shell">$ ~ tmux
+dyld: Library not loaded: /usr/local/lib/libevent-2.0.5.dylib
+Referenced from: /usr/local/Cellar/tmux/1.9a/bin/tmux
+Reason: image not found
+Trace/BPT trap: 5
+
+$ ~ brew link libevent
+Linking /usr/local/Cellar/libevent/2.0.22...
+Error: Could not symlink lib/pkgconfig/libevent.pc
+/usr/local/lib/pkgconfig is not writable.
+
+$ ~ sudo chown wtsung /usr/local/lib/pkgconfig
+
+$ ~ brew link libevent
+Linking /usr/local/Cellar/libevent/2.0.22... 25 symlinks created
+</code></pre>
+
+<p>使用包管理工具可以很好地避免依赖性问题，可能的话，尽量通过包管理工具进行安装。</p>
+
+<p>安装好后可通过如下命令查看tmux的版本号，确保其正确安装</p>
+
+<pre><code class="language-shell">$ tmux -V
+</code></pre>
+
+<p>其中，V为大写。</p>
+
+<h2 id="查看帮助">查看帮助</h2>
+
+<p>tmux的<a href="https://github.com/tmux/tmux">主页</a>提供了一定的指引，更多的帮助信息，见<code>tmux.1 manpage</code>，可通过如下命令查看</p>
+
+<pre><code class="language-shell">$ nroff -mdoc tmux.1|less
+</code></pre>
+
+<p>vin语法相关文档见<a href="https://github.com/keith/tmux.vim">这里</a>和<a href="https://raw.githubusercontent.com/keith/tmux.vim/master/syntax/tmux.vim">这里</a>，bash补全文档在<a href="https://github.com/przepompownia/tmux-bash-completion">这里</a>。也可通过这个邮箱<code>tmux-users@googlegroups.com</code>上报bug或提出意见与建议。</p>
+
+<p>archlinux的<a href="https://wiki.archlinux.org/index.php/tmux">帮助文档</a>中也给出了详细的参考。</p>
+
+<h1 id="基本使用">基本使用</h1>
+
+<h2 id="快捷键前缀-prefix">快捷键前缀 (Prefix)</h2>
+
+<p>考虑到键盘只有那么大，为了使得tmux的快捷键不与其他程序快捷键冲突，tmux的快捷键均采用前缀 (Prefix) + 某键的方式。默认的前缀为<code>Ctrl-b</code>的组合键。以查看 / 切换Session的快捷键<code>Prefix-s</code>为例，其具体的操作方法为</p>
+
+<ul>
+<li>按下快捷键前缀<code>Ctrl-b</code></li>
+<li>放开快捷键前缀<code>Ctrl-b</code></li>
+<li>按下<code>s</code>键</li>
+</ul>
+
+<p>尝试之后可以发现，<code>Ctrl</code>与<code>b</code>键相距非常远，在实际操作中很难使用，且<code>Ctrl-b</code>同时也是Emacs或Vim，甚至是命令行的快捷键。于是，我们可以考虑将快捷键前缀改为一个更为顺手的组合，如<code>Ctrl-a</code>。具体做法为，将以下配置写入tmux的配置文件<code>~/.tmux.conf</code>中</p>
+
+<pre><code class="language-shell">$ unbind C-b
+$ set -g prefix C-a
+</code></pre>
+
+<h2 id="tmux的配置文件">tmux的配置文件</h2>
+
+<p>每当开启一个新的Session时，tmux都会先读取<code>~/.tmux.conf</code>这一配置文件，我们可以通过修改tmux的配置文件来更加个性化地设置自己的tmux。如果希望对于配置的修改可以立即生效，可以在配置文件中加入这样一行</p>
+
+<pre><code class="language-shell"># bind a reload key
+$ bind R source-file ~/.tmux.conf ; display-message &quot;Config reloaded..&quot;
+</code></pre>
+
+<p>当在配置文件中添加新的配置之后，按下<code>Prefix r</code>组合键即可重新加载配置并使配置生效。</p>
+
+<h1 id="tmux的功能与快捷键">tmux的功能与快捷键</h1>
+
+<h2 id="session">Session</h2>
+
+<p>tmux的会话除非明确、显式地关闭，否则在计算机关闭之前均不会消失，总能在各种手残，意外之后，拯救你于水火之中。tmux的Session默认从0进行编号，通过编号可以方便地接入各个会话。</p>
+
+<h3 id="新建session并命名">新建Session并命名</h3>
+
+<pre><code class="language-shell">$ tmux new -s &lt;name-of-my-session&gt;
+# new是new -session的简写，以上命令还可以写成
+$ tmux new-session -s &lt;name-of-my-session&gt;
+</code></pre>
+
+<h3 id="再次新建session并命名">再次新建Session并命名</h3>
+
+<p>若已新建一个Session并处于该Session中，还需要再新建一个会话，则可在按下<code>Prefix :</code>后，在下方的状态栏中输入</p>
+
+<pre><code class="language-shell">$ new -s &lt;name-of-my-new-session&gt;
+</code></pre>
+
+<h3 id="重命名当前session">重命名当前Session</h3>
+
+<p>快捷键为<code>Prefix-$</code></p>
+
+<h3 id="获取session列表">获取Session列表</h3>
+
+<p>若要获取现有的Session列表，可按下<code>Prefix s</code>的组合键，或是输入<code>tmux ls</code>的命令</p>
+
+<h3 id="切换-恢复session">切换 / 恢复Session</h3>
+
+<p>若要切换 / 恢复Session，则可输入<code>tmux a -t &lt;name-of-my-session&gt;</code>或是<code>tmux a -t &lt;number-of-my-session&gt;</code>依据Session名称或序号进行切换。其中，<code>a</code>是<code>attach</code>的简写，写作<code>attach</code>亦可。</p>
+
+<h3 id="分离session">分离Session</h3>
+
+<p>如想关闭终端而保持服务运行，可以选择分离(detach) Session，使其在后台继续运行，快捷键为<code>Prefix-d</code>组合键。</p>
+
+<h3 id="结束session">结束Session</h3>
+
+<p>结束指定Session，使用快捷键<code>Ctrl-d</code>后进行选择，或输入</p>
+
+<pre><code class="language-shell">$ tmux kill-session -t &lt;name-of-mine-session&gt;
+</code></pre>
+
+<p>结束所有Session</p>
+
+<p>按下<code>Prefix-:</code>后，在下方输入<code>kill-server</code></p>
+
+<h3 id="离开tmux">离开tmux</h3>
+
+<p>若要直接关闭tmux，则输入<code>exit</code>，这同样会关闭所有Session。</p>
+
+<h2 id="windows">Windows</h2>
+
+<p>Windows相关操作如下表所示</p>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>新建Window</td>
+<td><code>Prefix-c</code></td>
+</tr>
+
+<tr>
+<td>关闭Window</td>
+<td><code>Prefix-&amp;</code></td>
+</tr>
+
+<tr>
+<td>重命名Window</td>
+<td><code>Prefix-,</code></td>
+</tr>
+
+<tr>
+<td>切换到上一个活动的Window</td>
+<td><code>Prefix-p</code></td>
+</tr>
+
+<tr>
+<td>切换到下一个活动的Window</td>
+<td><code>Prefix-n</code></td>
+</tr>
+
+<tr>
+<td>在相邻的两个Windows里切换</td>
+<td><code>Prefix-l</code></td>
+</tr>
+
+<tr>
+<td>可视化窗口选择进行切换</td>
+<td><code>Prefix-w</code></td>
+</tr>
+
+<tr>
+<td>使用Windows编号切换</td>
+<td><code>Prefix-&lt;number-of-mine-windows&gt;</code></td>
+</tr>
+
+<tr>
+<td>在多个Windows里搜索关键字</td>
+<td><code>Prefix-f</code></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="pane">Pane</h2>
+
+<p>Pane相关操作如下</p>
+
+<h3 id="拆分与关闭pane">拆分与关闭Pane</h3>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>水平拆分当前Pane</td>
+<td><code>Prefix-%</code></td>
+</tr>
+
+<tr>
+<td>垂直拆分当前Pane</td>
+<td><code>Prefix-“</code></td>
+</tr>
+
+<tr>
+<td>关闭当前Pane</td>
+<td><code>Prefix-x</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="切换pane">切换Pane</h3>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>查看所有Pane编号并切换</td>
+<td><code>Prefix-q</code></td>
+</tr>
+
+<tr>
+<td>切换到下一Pane</td>
+<td><code>Prefix-o</code></td>
+</tr>
+
+<tr>
+<td>最近使用的Pane间移动</td>
+<td><code>Ctrl-\</code></td>
+</tr>
+
+<tr>
+<td>Pane之间移动</td>
+<td><code>Prefix-hjkl</code> 或<code>Ctrl-hjkl</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="pane布局调整">Pane布局调整</h3>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Pane大小调整</td>
+<td><code>Prefix-HJKL</code></td>
+</tr>
+
+<tr>
+<td>暂时放大当前Pane</td>
+<td><code>Prefix-z</code></td>
+</tr>
+
+<tr>
+<td>当前Pane移动到左边</td>
+<td><code>Prefix-}</code></td>
+</tr>
+
+<tr>
+<td>当前Pane移动到右边</td>
+<td><code>Prefix-{</code></td>
+</tr>
+
+<tr>
+<td>当前Pane在新的Window中打开</td>
+<td><code>Prefix-!</code></td>
+</tr>
+
+<tr>
+<td>在几种内建布局中依次切换</td>
+<td><code>Prefix-space</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="复制文本">复制文本</h3>
+
+<p>使用<code>Prefix-[</code>快捷键可进入复制模式，tmux在复制模式下可以使用与Vim极其相似的方式在文本间移动光标。此外，还可以将tmux设置为vi模式，获得与Vim操作更为接近的操作体验。具体方法为将以下配置加入配置文件<code>~/.tmux.conf</code>。</p>
+
+<pre><code class="language-shell"># Use vim keybindings in copy mode
+$ setw -g mode-keys vi
+</code></pre>
+
+<p>默认情况下，当从tmux复制文本时，复制的文本仅能粘贴到同一个tmux会话中。为使tmux复制的内容可以作用于系统剪贴板，需要安装<code>retach-to-user-namespace</code>，依然推荐使用包管理工具安装，Mac下使用brew</p>
+
+<pre><code class="language-shell">$ brew install reattach-to-user-namespace
+</code></pre>
+
+<p>在配置文件<code>~/.tmux.conf</code>中加入以下内容</p>
+
+<pre><code class="language-shell"># invoke reattach-to-user-namespace every time a new window/pane opens
+$ set-option -g default-command &quot;reattach-to-user-namespace -l bash&quot;
+</code></pre>
+
+<p>此外还可以将以下配置写入tmux配置文件<code>~/.tmux.conf</code>中，以使用<code>v</code>键选择文本，使用<code>y</code>键复制文本，使复制文本的的操作与Vim无缝衔接。</p>
+
+<pre><code class="language-shell"># start selecting text typing 'v' key (once you are in copy mode)
+$ bind-key -t vi-copy v begin-selection
+# copy selected text to the system's clipboard
+$ bind-key -t vi-copy y copy-pipe &quot;reattach-to-user-namespace pbcopy&quot;
+</code></pre>
+
+<p>按<code>Prefix-[</code>进入复制模式后，可进行如下操作</p>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>快捷键</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>开始选择</td>
+<td><code>space</code>或<code>v</code></td>
+</tr>
+
+<tr>
+<td>整块选择</td>
+<td><code>Ctrl-v</code></td>
+</tr>
+
+<tr>
+<td>方向键移动</td>
+<td><code>hjkl</code></td>
+</tr>
+
+<tr>
+<td>向前 / 向后移动一个单词</td>
+<td><code>w</code> <code>b</code></td>
+</tr>
+
+<tr>
+<td>行内移动到下一个字符位置</td>
+<td><code>fx</code>或<code>FX</code></td>
+</tr>
+
+<tr>
+<td>在缓冲区内翻页</td>
+<td><code>Ctrl-b</code> <code>Ctrl-f</code></td>
+</tr>
+
+<tr>
+<td>到缓冲区最顶 / 底端；查找后一个 / 上一个</td>
+<td><code>g</code> <code>G</code> ; <code>n</code> <code>N</code></td>
+</tr>
+
+<tr>
+<td>向下 / 向上查找</td>
+<td><code>/</code> <code>?</code></td>
+</tr>
+
+<tr>
+<td>复制；粘贴</td>
+<td><code>enter</code>或<code>y</code> ; <code>Prefix-]</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>在输入快捷键<code>Prefix-:</code>可通过在下方状态栏输入或执行以下内容，实现更多功能</p>
+
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>输入或执行</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>复制整个Pane可见</td>
+<td><code>capture-pane</code></td>
+</tr>
+
+<tr>
+<td>整块选择</td>
+<td><code>show-buffer</code></td>
+</tr>
+
+<tr>
+<td>列出缓冲区列表</td>
+<td><code>list-buffer</code></td>
+</tr>
+
+<tr>
+<td>从缓冲区列表选择并插入当前Pane</td>
+<td><code>choose-buffer</code> <code>enter</code></td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="进阶技巧">进阶技巧</h1>
+
+<h2 id="创建自动会话-tmuxinator">创建自动会话：Tmuxinator</h2>
+
+<p>当经常使用具有相同布局与结构的Session进行工作时，就会希望是否可以直接生成具有自己期望的样式的Session以减少重复劳动。Tmuxinator正是为此而生。</p>
+
+<p>Tmuxinator是一个Ruby (I love Ruby, everybody love Ruby, who don&rsquo;t love Ruby )的gem包。可以通过在tmux的配置文件中定义Session的细节，然后使用一条命令创建出这样的Session，官方文档戳<a href="https://github.com/tmuxinator/tmuxinator">这里</a>，其具体实现如下。</p>
+
+<p>首先安装Tumxinator</p>
+
+<pre><code class="language-shell">$ gem install tmuxinator
+</code></pre>
+
+<p>之后就可以使用tmuxinator或mux命令了。创建配置文件的命令如下</p>
+
+<pre><code class="language-shell">$ tmuxinator new project_a
+</code></pre>
+
+<p>按下<code>enter</code>后，就会打开配置文件<code>~/.tmuxinator/project_a.yml</code>，即意味着创建项目a所需的配置。配置文件书写范例如下</p>
+
+<pre><code class="language-shell">name: project_a
+root: &lt;the-folder-of-project-A&gt;
+ 
+windows:
+  - server: &lt;command-to-start-application-server&gt;
+ 
+  - editor:
+    layout: even-horizontal
+    panes:
+      - vim
+      - &lt;command-to-launch-tests-guard&gt;
+ 
+  - shell: ''
+</code></pre>
+
+<p>配置文件创建完毕后即可通过如下命令启动tmux</p>
+
+<pre><code class="language-shell">$ tmuxinator start project_a
+</code></pre>
+
+<p>或是使用tmuxinator的别名</p>
+
+<pre><code class="language-shell">$ mux start project_a
+</code></pre>
+
+<h2 id="结对编程-tmate">结对编程：tmate</h2>
+
+<p>在工作中，可以将tmux Session的地址分享给他人，使他们能够通过SSH接入会话。<a href="https://tmate.io/">tmate</a>实现这一功能的管理工具。</p>
+
+<p>安装tmate</p>
+
+<pre><code class="language-shell">$ brew install mate
+</code></pre>
+
+<p>使用tmate开启新的Session</p>
+
+<pre><code class="language-shell">$ tmate
+</code></pre>
+
+<p>复制下方任务栏中出现的SSH，lock &amp; load~</p>
+
+<h2 id="tmux与vim">tmux与Vim</h2>
+
+<h3 id="调整光标形状">调整光标形状</h3>
+
+<p>当tmux运行Vim时，默认无论Vim处于何种模式，光标形状都是一样的。可将下面的配置加入<code>~/.vimrc</code>中，以调整光标形状。原文在<a href="https://gist.github.com/andyfowler/1195581">这里</a>。</p>
+
+<pre><code class="language-shell">if exists('$ITERM_PROFILE')
+  if exists('$TMUX') 
+    let &amp;amp;t_SI = &quot;&lt;Esc&gt;[3 q&quot;
+    let &amp;amp;t_EI = &quot;&lt;Esc&gt;[0 q&quot;
+  else
+    let &amp;amp;t_SI = &quot;&lt;Esc&gt;]50;CursorShape=1x7&quot;
+    let &amp;amp;t_EI = &quot;&lt;Esc&gt;]50;CursorShape=0x7&quot;
+  endif
+end
+</code></pre>
+
+<h3 id="调整粘贴时的文本缩进">调整粘贴时的文本缩进</h3>
+
+<p>在Vim中粘贴时，Vim的自动缩进往往会让文本缩进发生变化。通常的策略时在粘贴前执行<code>:set nopaste</code>，但<a href="https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode">这里</a>提供了一个更好的解决方案，将下面的配置粘贴至<code>~/.vimrc</code>中即可一劳永逸地解决这一问题。</p>
+
+<pre><code class="language-shell">&quot; for tmux to automatically set paste and nopaste mode at the time pasting (as
+&quot; happens in VIM UI)
+ 
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+ 
+  let tmux_start = &quot;&lt;Esc&gt;Ptmux;&quot;
+  let tmux_end = &quot;&lt;Esc&gt;&quot;
+ 
+  return tmux_start . substitute(a:s, &quot;&lt;Esc&gt;&quot;, &quot;&lt;Esc&gt;&lt;Esc&gt;&quot;, 'g') . tmux_end
+endfunction
+ 
+let &amp;amp;t_SI .= WrapForTmux(&quot;&lt;Esc&gt;[?2004h&quot;)
+let &amp;amp;t_EI .= WrapForTmux(&quot;&lt;Esc&gt;[?2004l&quot;)
+ 
+function! XTermPasteBegin()
+  set pastetoggle=&lt;Esc&gt;[201~
+  set paste
+  return &quot;&quot;
+endfunction
+ 
+inoremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin()
+</code></pre>
+
+<h3 id="调整背景的配色方案">调整背景的配色方案</h3>
+
+<p>通过tmux打开Vim时，Vim的配色方案有可能不能正确显示，例如仅有有字符的地方才有背景色。这是因为tmux在运行Vim时需要配置终端参数<code>term parameter</code>，将下面的配置添加至<code>~/.vim</code>即可。</p>
+
+<pre><code class="language-shell">if exists('$TMUX')
+  set term=screen-256color
+endif
+</code></pre>
+
+<h2 id="优化tmux显示">优化tmux显示</h2>
+
+<p>可通过修改配置文件改变tmux状态栏的外观。<a href="https://github.com/gpakosz/.tmux">gpakosz</a>提供了一套不错的个性化方案，实现的功能如下</p>
+
+<ul>
+<li>基于powerline的美化</li>
+<li>显示笔记本电池电量</li>
+<li>和Mac互通的剪切板</li>
+<li>和vim更相近的快捷键</li>
+</ul>
+
+<p>安装方法为：</p>
+
+<pre><code class="language-shell">$ cd
+$ rm -rf .tmux
+$ git clone https://github.com/gpakosz/.tmux.git
+$ ln -s .tmux/.tmux.conf
+$ cp .tmux/.tmux.conf.local .
+</code></pre>
+
+<p>实际上很多功能之前都已提到，而powerline的美化需要事先安装powerline，具体方法参见这里，官方实现效果如图所示。</p>
+
+<p><img src="http://o70fjq8qm.bkt.clouddn.com/gpakosz.gif" alt="gpakosz效果图" /></p>
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'wtsung';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="/2017/11/15/npm/" rel="prev">npm被墙之后</a></span>
+    
+    
+      <span class="next"><a href="/2017/11/20/machine_learning_theory_1/" rel="next">机器学习理论(1) 学习理论框架</a> &rarr;</span>
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+</body>
+</html>
+
