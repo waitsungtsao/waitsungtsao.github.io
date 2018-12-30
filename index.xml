@@ -26,7 +26,7 @@
       <pubDate>Wed, 15 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/11/15/tmux/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://tmux.github.io/&#34;&gt;tmux&lt;/a&gt;是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，自然就会懂得tmux的多窗口与窗口恢复有多重要了。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://tmux.github.io/&#34;&gt;tmux&lt;/a&gt;是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，真的会无比感恩tmux的多窗口与窗口恢复。&lt;/p&gt;</description>
     </item>
     
     <item>

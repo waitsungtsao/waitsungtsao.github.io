@@ -47,10 +47,10 @@
       </div>
       <div id="social" class="col span_6">
         <ul>
+          <li><a href="https://twitter.com/WaitsungTsao" target="_blank">Twitter</a></li>
           
           
-          
-          
+          <li><a href="/index.xml" type="application/rss+xml" target="_blank">RSS</a></li>
         </ul>
       </div>
     </div>
@@ -105,7 +105,7 @@ code.has-jax {
       </div>
     </div>
     <article>
-      <p><a href="https://tmux.github.io/">tmux</a>是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，自然就会懂得tmux的多窗口与窗口恢复有多重要了。</p>
+      <p><a href="https://tmux.github.io/">tmux</a>是*nix系统中的一个终端复用器，通俗来说就是一个管理窗口的程序，提供了多层级窗体存储、恢复与协作的功能。尤其适用于多窗口，多地点，多人协作的工作情形。遵循 BSD 协议，可运行于OpenBSD, FreeBSD, NetBSD, Linux, OS X 和 Solaris等多个平台。当调试服务器需要打开N多窗口时；或是SSH超时，broken pipe之后，真的会无比感恩tmux的多窗口与窗口恢复。</p>
 
 <h1 id="tmux基础">tmux基础</h1>
 
@@ -119,37 +119,39 @@ code.has-jax {
 <li>Pane: 是对于Windows的进一步划分，是Tmux中最小的单元，同一Windows下的Panes可在同一Windows下同时呈现（也可单独放大某一Pane）</li>
 </ul>
 
-<p>其具体结构如图所示：（图片引用自<a href="http://cenalulu.github.io/">CENALULU&rsquo;S TECH BLOG</a>)</p>
+<p>其具体结构如图所示：</p>
 
-<p><img src="http://o70fjq8qm.bkt.clouddn.com/TmuxFrame.jpg" alt="Tmux结构" /></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fypgyd15ruj30uk0lwdhj.jpg" alt="tmux结构1 at 05.15.06" /></p>
 
-<p>如图所示，在tmux窗口下方的任务栏中显示了当前的Session与Windows编号。Session与Windows均可根据需要进行命名以方便管理。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fyphfe38pnj310a0u0aij.jpg" alt="tmux的session、window和pane" /></p>
+
+<p>在tmux窗口下方的任务栏可以显示当前的Session与Windows编号。如这里的Session名为<code>my_sess</code>，Window名为<code>my_window</code>，这一Window中分为左、右上、右下三个Pane。Session与Windows均可根据需要进行命名以方便管理。</p>
 
 <h2 id="安装">安装</h2>
 
 <p>在Mac下推荐使用homebrew进行安装</p>
 
-<pre><code class="language-shell">$ brew install tmux
+<pre><code>$ brew install tmux
 </code></pre>
 
 <p>在Linux环境中可以使用相应的包管理系统进行安装，如在Debian系环境下</p>
 
-<pre><code class="language-shell">$ sudo apt-get install tmux
+<pre><code class="language-s">$ sudo apt-get install tmux
 </code></pre>
 
 <p>Red Hat系环境下</p>
 
-<pre><code class="language-shell">$ sudo yum install tmux
+<pre><code>$ sudo yum install tmux
 </code></pre>
 
 <p>arch linux环境下</p>
 
-<pre><code class="language-shell">$ pacman -S tmux
+<pre><code>$ pacman -S tmux
 </code></pre>
 
 <p>FreeBSD通过自带的port进行安装</p>
 
-<pre><code class="language-shell">$ cd /usr/ports/sysutil/tmux
+<pre><code>$ cd /usr/ports/sysutil/tmux
 $ make install clean
 </code></pre>
 
@@ -157,7 +159,7 @@ $ make install clean
 
 <p>通过git安装的话，依次执行</p>
 
-<pre><code class="language-shell">$ git clone https://github.com/tmux/tmux.git
+<pre><code>$ git clone https://github.com/tmux/tmux.git
 $ cd tmux
 $ sh autogen.sh
 $ ./configure &amp;&amp; make
@@ -165,13 +167,13 @@ $ ./configure &amp;&amp; make
 
 <p>如果从打包好的源码安装的话</p>
 
-<pre><code class="language-shell">$ ./configure &amp;&amp; make
+<pre><code>$ ./configure &amp;&amp; make
 $ sudo make install
 </code></pre>
 
 <p>需要注意的是，tmux依赖于<code>libevent 2.x</code>，下载地址在<a href="http://libevent.org">这里</a>。如果缺少<code>libevent 2.x</code>环境而使用源码安装tmux的话，安装过程可能不会那么顺利。有时也会出现如下报错，执行如下命令即可。</p>
 
-<pre><code class="language-shell">$ ~ tmux
+<pre><code>$ ~ tmux
 dyld: Library not loaded: /usr/local/lib/libevent-2.0.5.dylib
 Referenced from: /usr/local/Cellar/tmux/1.9a/bin/tmux
 Reason: image not found
@@ -190,18 +192,16 @@ Linking /usr/local/Cellar/libevent/2.0.22... 25 symlinks created
 
 <p>使用包管理工具可以很好地避免依赖性问题，可能的话，尽量通过包管理工具进行安装。</p>
 
-<p>安装好后可通过如下命令查看tmux的版本号，确保其正确安装</p>
+<p>安装好后可通过如下命令查看tmux的版本号，确保其正确安装。</p>
 
-<pre><code class="language-shell">$ tmux -V
+<pre><code>$ tmux -V
 </code></pre>
-
-<p>其中，V为大写。</p>
 
 <h2 id="查看帮助">查看帮助</h2>
 
 <p>tmux的<a href="https://github.com/tmux/tmux">主页</a>提供了一定的指引，更多的帮助信息，见<code>tmux.1 manpage</code>，可通过如下命令查看</p>
 
-<pre><code class="language-shell">$ nroff -mdoc tmux.1|less
+<pre><code>$ nroff -mdoc tmux.1|less
 </code></pre>
 
 <p>vin语法相关文档见<a href="https://github.com/keith/tmux.vim">这里</a>和<a href="https://raw.githubusercontent.com/keith/tmux.vim/master/syntax/tmux.vim">这里</a>，bash补全文档在<a href="https://github.com/przepompownia/tmux-bash-completion">这里</a>。也可通过这个邮箱<code>tmux-users@googlegroups.com</code>上报bug或提出意见与建议。</p>
@@ -222,7 +222,7 @@ Linking /usr/local/Cellar/libevent/2.0.22... 25 symlinks created
 
 <p>尝试之后可以发现，<code>Ctrl</code>与<code>b</code>键相距非常远，在实际操作中很难使用，且<code>Ctrl-b</code>同时也是Emacs或Vim，甚至是命令行的快捷键。于是，我们可以考虑将快捷键前缀改为一个更为顺手的组合，如<code>Ctrl-a</code>。具体做法为，将以下配置写入tmux的配置文件<code>~/.tmux.conf</code>中</p>
 
-<pre><code class="language-shell">$ unbind C-b
+<pre><code>$ unbind C-b
 $ set -g prefix C-a
 </code></pre>
 
@@ -230,7 +230,7 @@ $ set -g prefix C-a
 
 <p>每当开启一个新的Session时，tmux都会先读取<code>~/.tmux.conf</code>这一配置文件，我们可以通过修改tmux的配置文件来更加个性化地设置自己的tmux。如果希望对于配置的修改可以立即生效，可以在配置文件中加入这样一行</p>
 
-<pre><code class="language-shell"># bind a reload key
+<pre><code># bind a reload key
 $ bind R source-file ~/.tmux.conf ; display-message &quot;Config reloaded..&quot;
 </code></pre>
 
@@ -244,7 +244,7 @@ $ bind R source-file ~/.tmux.conf ; display-message &quot;Config reloaded..&quot
 
 <h3 id="新建session并命名">新建Session并命名</h3>
 
-<pre><code class="language-shell">$ tmux new -s &lt;name-of-my-session&gt;
+<pre><code>$ tmux new -s &lt;name-of-my-session&gt;
 # new是new -session的简写，以上命令还可以写成
 $ tmux new-session -s &lt;name-of-my-session&gt;
 </code></pre>
@@ -253,7 +253,7 @@ $ tmux new-session -s &lt;name-of-my-session&gt;
 
 <p>若已新建一个Session并处于该Session中，还需要再新建一个会话，则可在按下<code>Prefix :</code>后，在下方的状态栏中输入</p>
 
-<pre><code class="language-shell">$ new -s &lt;name-of-my-new-session&gt;
+<pre><code>$ new -s &lt;name-of-my-new-session&gt;
 </code></pre>
 
 <h3 id="重命名当前session">重命名当前Session</h3>
@@ -276,7 +276,7 @@ $ tmux new-session -s &lt;name-of-my-session&gt;
 
 <p>结束指定Session，使用快捷键<code>Ctrl-d</code>后进行选择，或输入</p>
 
-<pre><code class="language-shell">$ tmux kill-session -t &lt;name-of-mine-session&gt;
+<pre><code>$ tmux kill-session -t &lt;name-of-mine-session&gt;
 </code></pre>
 
 <p>结束所有Session</p>
@@ -459,24 +459,24 @@ $ tmux new-session -s &lt;name-of-my-session&gt;
 
 <p>使用<code>Prefix-[</code>快捷键可进入复制模式，tmux在复制模式下可以使用与Vim极其相似的方式在文本间移动光标。此外，还可以将tmux设置为vi模式，获得与Vim操作更为接近的操作体验。具体方法为将以下配置加入配置文件<code>~/.tmux.conf</code>。</p>
 
-<pre><code class="language-shell"># Use vim keybindings in copy mode
+<pre><code># Use vim keybindings in copy mode
 $ setw -g mode-keys vi
 </code></pre>
 
 <p>默认情况下，当从tmux复制文本时，复制的文本仅能粘贴到同一个tmux会话中。为使tmux复制的内容可以作用于系统剪贴板，需要安装<code>retach-to-user-namespace</code>，依然推荐使用包管理工具安装，Mac下使用brew</p>
 
-<pre><code class="language-shell">$ brew install reattach-to-user-namespace
+<pre><code>$ brew install reattach-to-user-namespace
 </code></pre>
 
 <p>在配置文件<code>~/.tmux.conf</code>中加入以下内容</p>
 
-<pre><code class="language-shell"># invoke reattach-to-user-namespace every time a new window/pane opens
+<pre><code># invoke reattach-to-user-namespace every time a new window/pane opens
 $ set-option -g default-command &quot;reattach-to-user-namespace -l bash&quot;
 </code></pre>
 
 <p>此外还可以将以下配置写入tmux配置文件<code>~/.tmux.conf</code>中，以使用<code>v</code>键选择文本，使用<code>y</code>键复制文本，使复制文本的的操作与Vim无缝衔接。</p>
 
-<pre><code class="language-shell"># start selecting text typing 'v' key (once you are in copy mode)
+<pre><code># start selecting text typing 'v' key (once you are in copy mode)
 $ bind-key -t vi-copy v begin-selection
 # copy selected text to the system's clipboard
 $ bind-key -t vi-copy y copy-pipe &quot;reattach-to-user-namespace pbcopy&quot;
@@ -583,17 +583,17 @@ $ bind-key -t vi-copy y copy-pipe &quot;reattach-to-user-namespace pbcopy&quot;
 
 <p>首先安装Tumxinator</p>
 
-<pre><code class="language-shell">$ gem install tmuxinator
+<pre><code>$ gem install tmuxinator
 </code></pre>
 
 <p>之后就可以使用tmuxinator或mux命令了。创建配置文件的命令如下</p>
 
-<pre><code class="language-shell">$ tmuxinator new project_a
+<pre><code>$ tmuxinator new project_a
 </code></pre>
 
 <p>按下<code>enter</code>后，就会打开配置文件<code>~/.tmuxinator/project_a.yml</code>，即意味着创建项目a所需的配置。配置文件书写范例如下</p>
 
-<pre><code class="language-shell">name: project_a
+<pre><code>name: project_a
 root: &lt;the-folder-of-project-A&gt;
  
 windows:
@@ -610,12 +610,12 @@ windows:
 
 <p>配置文件创建完毕后即可通过如下命令启动tmux</p>
 
-<pre><code class="language-shell">$ tmuxinator start project_a
+<pre><code>$ tmuxinator start project_a
 </code></pre>
 
 <p>或是使用tmuxinator的别名</p>
 
-<pre><code class="language-shell">$ mux start project_a
+<pre><code>$ mux start project_a
 </code></pre>
 
 <h2 id="结对编程-tmate">结对编程：tmate</h2>
@@ -624,12 +624,12 @@ windows:
 
 <p>安装tmate</p>
 
-<pre><code class="language-shell">$ brew install mate
+<pre><code>$ brew install mate
 </code></pre>
 
 <p>使用tmate开启新的Session</p>
 
-<pre><code class="language-shell">$ tmate
+<pre><code>$ tmate
 </code></pre>
 
 <p>复制下方任务栏中出现的SSH，lock &amp; load~</p>
@@ -640,7 +640,7 @@ windows:
 
 <p>当tmux运行Vim时，默认无论Vim处于何种模式，光标形状都是一样的。可将下面的配置加入<code>~/.vimrc</code>中，以调整光标形状。原文在<a href="https://gist.github.com/andyfowler/1195581">这里</a>。</p>
 
-<pre><code class="language-shell">if exists('$ITERM_PROFILE')
+<pre><code>if exists('$ITERM_PROFILE')
   if exists('$TMUX') 
     let &amp;amp;t_SI = &quot;&lt;Esc&gt;[3 q&quot;
     let &amp;amp;t_EI = &quot;&lt;Esc&gt;[0 q&quot;
@@ -655,7 +655,7 @@ end
 
 <p>在Vim中粘贴时，Vim的自动缩进往往会让文本缩进发生变化。通常的策略时在粘贴前执行<code>:set nopaste</code>，但<a href="https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode">这里</a>提供了一个更好的解决方案，将下面的配置粘贴至<code>~/.vimrc</code>中即可一劳永逸地解决这一问题。</p>
 
-<pre><code class="language-shell">&quot; for tmux to automatically set paste and nopaste mode at the time pasting (as
+<pre><code>&quot; for tmux to automatically set paste and nopaste mode at the time pasting (as
 &quot; happens in VIM UI)
  
 function! WrapForTmux(s)
@@ -685,7 +685,7 @@ inoremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin()
 
 <p>通过tmux打开Vim时，Vim的配色方案有可能不能正确显示，例如仅有有字符的地方才有背景色。这是因为tmux在运行Vim时需要配置终端参数<code>term parameter</code>，将下面的配置添加至<code>~/.vim</code>即可。</p>
 
-<pre><code class="language-shell">if exists('$TMUX')
+<pre><code>if exists('$TMUX')
   set term=screen-256color
 endif
 </code></pre>
@@ -703,7 +703,7 @@ endif
 
 <p>安装方法为：</p>
 
-<pre><code class="language-shell">$ cd
+<pre><code>$ cd
 $ rm -rf .tmux
 $ git clone https://github.com/gpakosz/.tmux.git
 $ ln -s .tmux/.tmux.conf
@@ -712,7 +712,7 @@ $ cp .tmux/.tmux.conf.local .
 
 <p>实际上很多功能之前都已提到，而powerline的美化需要事先安装powerline，具体方法参见这里，官方实现效果如图所示。</p>
 
-<p><img src="http://o70fjq8qm.bkt.clouddn.com/gpakosz.gif" alt="gpakosz效果图" /></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fyphiqgcipg31d60bi1kx.gif" alt="gpakosz效果图" /></p>
       
       
       
@@ -751,7 +751,7 @@ $ cp .tmux/.tmux.conf.local .
   <footer role="contentinfo">
     <div style="text-align:center;">
       
-      
+      Copyright © Wai Tsung Tsao 2012-2018
     </div>
   </footer>
 
