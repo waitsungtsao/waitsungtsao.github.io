@@ -6,10 +6,19 @@
     <description>Recent content on WAITSUNGTSAO</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 20 Nov 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2018 Lemon</title>
+      <link>/2019/01/01/2018-lemon/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/01/01/2018-lemon/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>机器学习理论(1) 学习理论框架</title>
