@@ -3,11 +3,11 @@
   <title>Pippa Passes</title>
   
   <subtitle>The only journey is the one within.</subtitle>
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://waitsungtsao.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
+  <link href="https://waitsungtsao.github.io/"/>
   <updated>2019-10-19T00:51:03.027Z</updated>
-  <id>http://example.com/</id>
+  <id>https://waitsungtsao.github.io/</id>
   
   <author>
     <name>Wai Tsung Tsao</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>机器学习理论(1) 学习理论框架</title>
-    <link href="http://example.com/2017/11/20/2017-11-20-1/"/>
-    <id>http://example.com/2017/11/20/2017-11-20-1/</id>
+    <link href="https://waitsungtsao.github.io/2017/11/20/2017-11-20-1/"/>
+    <id>https://waitsungtsao.github.io/2017/11/20/2017-11-20-1/</id>
     <published>2017-11-20T00:00:00.000Z</published>
     <updated>2019-10-19T00:51:03.027Z</updated>
     
@@ -30,10 +30,10 @@
     
     
     
-    <category term="Machine Learning" scheme="http://example.com/categories/Machine-Learning/"/>
+    <category term="Machine Learning" scheme="https://waitsungtsao.github.io/categories/Machine-Learning/"/>
     
     
-    <category term="Learning Theory" scheme="http://example.com/tags/Learning-Theory/"/>
+    <category term="Learning Theory" scheme="https://waitsungtsao.github.io/tags/Learning-Theory/"/>
     
   </entry>
   
